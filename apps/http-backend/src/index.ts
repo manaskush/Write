@@ -113,7 +113,7 @@ try {
 
 app.get("/chat/:roomId",(req,res)=>{
   const roomId=req.params.roomId;
-  prismaClient.chat.findMany({
+  const messages=prismaClient.chat.findMany({
     where:{
       roomId:roomId
     },
@@ -122,7 +122,22 @@ app.get("/chat/:roomId",(req,res)=>{
     },
     take:50
   })
-  res.json
+  res.json({
+    messages
+  })
+})
+
+app.get("/room/:slug",async (req,res)=>{
+  const slug=Number(req.params.slug);
+  const room =await prismaClient.room.findOne({
+    where:{
+      slug
+    },
+  
+  })
+  res.json({
+    room
+  })
 
 })
 app.listen(3001);
