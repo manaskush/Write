@@ -110,4 +110,19 @@ try {
    
 });
 
+
+app.get("/chat/:roomId",(req,res)=>{
+  const roomId=req.params.roomId;
+  prismaClient.chat.findMany({
+    where:{
+      roomId:roomId
+    },
+    orderBy:{
+      id:"desc"
+    },
+    take:50
+  })
+  res.json
+
+})
 app.listen(3001);
