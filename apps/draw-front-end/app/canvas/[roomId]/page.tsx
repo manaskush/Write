@@ -14,7 +14,7 @@ export default function Canvas(){
           }
              ctx.strokeRect(0,0,canvas.width,canvas.height);
 
-            // Add more drawing logic here
+            // Add more drawing logic here logic added
         }
     },[canvasRef]);
     return<div>
