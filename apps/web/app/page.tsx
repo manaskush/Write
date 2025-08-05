@@ -127,45 +127,54 @@ const HeroSection = () => {
     }
   }, []);
 
-  return (
-    <section className="py-32 md:py-48 flex flex-col items-center justify-center text-center">
-      <motion.div {...sectionAnimation} className="relative z-10 px-6">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">
-          From Complex Sketch
-          <br />
-          to Clear Solution, Instantly.
-        </h1>
-        <p className="mt-6 max-w-2xl mx-auto text-lg text-[#b4b4b4]">
-          VisionSpace is an AI-powered collaborative canvas that understands your
-          ideas, solves problems, and enhances your creativity in real-time.
-        </p>
-        <div className="mt-8 flex justify-center items-center gap-4">
-          <Button
-            onClick={() => {
-              if (isLogged) {
-                router.push("/Dashboard");
-              } else {
-                router.push("/auth");
-              }
-            }}
-            size="default"
-            className="bg-[#00A3FF] text-white font-semibold hover:bg-[#00A3FF]/90 rounded-md shadow-lg shadow-[#00A3FF]/20"
-          >
-            {isLogged ? "Continue to Dashboard" : "Get Started For Free"}
-          </Button>
-          <Link href={"https://www.youtube.com/watch?v=UU-s-GS0FT8"}>
-          <Button
-            size="default"
-            variant="outline"
-            className="text-white border-[#333333] bg-transparent hover:bg-[#1C1C1C] hover:text-white rounded-md flex gap-2"
-          >
-            <ChevronRight className="w-4 h-4 mr-2" />
-            Watch Demo
-          </Button>
-          </Link>
-        </div>
-      </motion.div>
-    </section>
+  return (<section>
+  <section className="relative h-screen">
+  {/* Image Section */}
+  <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60" style={{ backgroundImage: 'url(/Space.png)' }} />
+</section>
+
+{/* Hero Section with Text Below */}
+<section className="md:py-48 flex flex-col items-center justify-center text-center relative z-10">
+  <motion.div {...sectionAnimation} className="relative z-10 px-6">
+    <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">
+      From Complex Sketch
+      <br />
+      to Clear Solution, Instantly.
+    </h1>
+    <p className="mt-6 max-w-2xl mx-auto text-lg text-[#b4b4b4]">
+      VisionSpace is an AI-powered collaborative canvas that understands your
+      ideas, solves problems, and enhances your creativity in real-time.
+    </p>
+    <div className="mt-8 flex justify-center items-center gap-4">
+      <Button
+        onClick={() => {
+          if (isLogged) {
+            router.push("/Dashboard");
+          } else {
+            router.push("/auth");
+          }
+        }}
+        size="default"
+        className="bg-[#00A3FF] text-white font-semibold hover:bg-[#00A3FF]/90 rounded-md shadow-lg shadow-[#00A3FF]/20"
+      >
+        {isLogged ? "Continue to Dashboard" : "Get Started For Free"}
+      </Button>
+      <Link href={"https://www.youtube.com/watch?v=UU-s-GS0FT8"}>
+        <Button
+          size="default"
+          variant="outline"
+          className="text-white border-[#333333] bg-transparent hover:bg-[#1C1C1C] hover:text-white rounded-md flex gap-2"
+        >
+          <ChevronRight className="w-4 h-4 mr-2" />
+          Watch Demo
+        </Button>
+      </Link>
+    </div>
+  </motion.div>
+</section>
+
+
+</section>
   );
 };
 
