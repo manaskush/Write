@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 // import { client } from "@repo/db/client";
 import { PrismaClient } from "@prisma/client";
 import "dotenv/config";
-// import "./corn.js"  // Temporarily disabled
+import "./corn.js"
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const client = new PrismaClient();

@@ -93,6 +93,7 @@ app.post("/api/signup", async (req: Request, res: Response) => {
     res.status(201).json({ message: "User created successfully" });
     return;
   } catch (error) {
+    console.error("Signup error:", error); // Add this for debugging
     if (error instanceof Error && error.message.includes("Unique constraint")) {
       res
         .status(409)
@@ -102,6 +103,7 @@ app.post("/api/signup", async (req: Request, res: Response) => {
 
     res.status(500).json({
       message: "Internal server error during signup",
+      error: error instanceof Error ? error.message : "Unknown error", // Add error details
     });
     return;
   }
@@ -464,9 +466,12 @@ app.post(
 );
 
 async function getPromptFromAI(base64Image: GenerativePart): Promise<string> {
-  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY as string });
+  try {
+    console.log("Getting prompt from AI..."); // Debug log
+    
+    const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY as string });
 
-  const system_prompt = `
+    const system_prompt = `
 You are an **expert sketch artist AI and a highly advanced prompt generator**, designed to analyze provided image data and construct **exceptionally detailed, technically accurate prompts** to guide image generation models (such as Gemini) in creating **superior, high-quality digital sketches**.
 
 Your generated prompt must intelligently and creatively **enhance the input image**, instructing the AI to produce a visually compelling, stylistically consistent, and intricately detailed pencil-style sketch.
@@ -487,23 +492,33 @@ Your effectiveness is measured solely by the clarity, accuracy, and level of det
 
   `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    config: {
-      systemInstruction: system_prompt,
-    },
-    contents: base64Image,
-  });
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      config: {
+        systemInstruction: system_prompt,
+      },
+      contents: base64Image,
+    });
 
-  return response.text as string;
+    const generatedPrompt = response.text as string;
+    console.log("AI prompt generated successfully:", generatedPrompt.substring(0, 100) + "..."); // Debug log
+    
+    return generatedPrompt;
+  } catch (error) {
+    console.error("Error getting prompt from AI:", error);
+    throw error;
+  }
 }
 
 async function generateImageFromPrompt(prompt: string): Promise<Buffer | null> {
-  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  try {
+    console.log("Generating image from prompt:", prompt.substring(0, 100) + "..."); // Debug log
+    
+    const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
-  const contents = prompt;
+    const contents = prompt;
 
-  const system_prompt = `
+    const system_prompt = `
 You are an **elite, hyper-realistic virtual sketch artist**, renowned for transforming complex, multi-faceted prompts into breathtaking and intricately detailed digital sketches. Your sole mission is to precisely analyze and interpret every instruction, nuance, and subtle directive in the prompt, and translate it into a visually stunning composition **designed explicitly for rendering on an HTML canvas**.
 
 **Your output must be a meticulous and highly detailed sketch, combining artistic mastery with technical precision.**
@@ -528,47 +543,72 @@ Your effectiveness is judged solely on your ability to **adhere to these directi
 
   `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash-preview-image-generation",
-    contents: system_prompt + contents,
-    config: {
-      // systemInstruction: system_prompt,
-      responseModalities: [Modality.TEXT, Modality.IMAGE],
-    },
-  });
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-preview-image-generation",
+      contents: system_prompt + contents,
+      config: {
+        // systemInstruction: system_prompt,
+        responseModalities: [Modality.TEXT, Modality.IMAGE],
+      },
+    });
 
-  const parts = response.candidates?.[0]?.content?.parts;
+    const parts = response.candidates?.[0]?.content?.parts;
 
-  if (!parts || parts.length === 0) {
+    if (!parts || parts.length === 0) {
+      console.error("No parts found in AI response"); // Debug log
+      return null;
+    }
+
+    for (const part of parts) {
+      if (part.inlineData?.data) {
+        const imageData = part.inlineData.data;
+        const buffer = Buffer.from(imageData, "base64");
+        console.log("Image buffer created successfully, size:", buffer.length); // Debug log
+        return buffer;
+      }
+    }
+    
+    console.error("No image data found in any parts of AI response"); // Debug log
+    return null;
+  } catch (error) {
+    console.error("Error generating image from prompt:", error);
     return null;
   }
-
-  for (const part of parts) {
-    if (part.inlineData?.data) {
-      const imageData = part.inlineData.data;
-      const buffer = Buffer.from(imageData, "base64");
-      return buffer;
-    }
-  }
-
-  return null;
 }
 
 async function improveImage(imageBuffer: Buffer) {
-  // 1. Generate a prompt from the image
-  const mimeType = "image/jpeg";
-  const base64Image: GenerativePart = fileToGenerativePart(
-    imageBuffer,
-    mimeType
-  );
+  try {
+    console.log("Starting image improvement process..."); // Debug log
+    
+    // 1. Generate a prompt from the image
+    const mimeType = "image/jpeg";
+    const base64Image: GenerativePart = fileToGenerativePart(
+      imageBuffer,
+      mimeType
+    );
 
-  // 🔮 Step 1: Call GPT-4 Vision or Gemini Vision to generate a better prompt
-  const generatedPrompt = await getPromptFromAI(base64Image);
+    // 🔮 Step 1: Call GPT-4 Vision or Gemini Vision to generate a better prompt
+    const generatedPrompt = await getPromptFromAI(base64Image);
+    
+    if (!generatedPrompt) {
+      console.error("Failed to generate prompt from AI");
+      return null;
+    }
 
-  // 🖼️ Step 2: Use the prompt to generate an improved image
-  const enhancedImage = await generateImageFromPrompt(generatedPrompt);
-
-  return enhancedImage;
+    // 🖼️ Step 2: Use the prompt to generate an improved image
+    const enhancedImage = await generateImageFromPrompt(generatedPrompt);
+    
+    if (!enhancedImage) {
+      console.error("Failed to generate enhanced image");
+      return null;
+    }
+    
+    console.log("Image improvement completed successfully");
+    return enhancedImage;
+  } catch (error) {
+    console.error("Error in improveImage function:", error);
+    return null;
+  }
 }
 
 // const __filename = fileURLToPath(import.meta.url);
@@ -612,29 +652,50 @@ app.post(
   upload.single("image"),
   async (req: Request, res: Response) => {
     try {
+      console.log("AI Image Improvement request received"); // Debug log
+      
       if (!req.file) {
+        console.log("No image file provided"); // Debug log
         res.status(400).json({ error: "No image provided" });
         return;
       }
 
       const imageBuffer: Buffer = req.file.buffer;
+      console.log(`Image buffer size: ${imageBuffer.length} bytes`); // Debug log
 
-      // Call improveImage function that returns Bufferz of improved image
+      // Call improveImage function that returns Buffer of improved image
       const improvedImageBuffer = await improveImage(imageBuffer);
-      // const no_bg_image = await remove(improvedImageBuffer!);
+      
+      // Check if image improvement was successful
+      if (!improvedImageBuffer) {
+        console.error("AI image improvement failed - returned null"); // Debug log
+        res.status(500).json({ error: "AI image improvement failed" });
+        return;
+      }
 
+      console.log(`Improved image buffer size: ${improvedImageBuffer.length} bytes`); // Debug log
       
       res.setHeader("Content-Type", "image/png");
-      
       res.send(improvedImageBuffer);
-      // res.send(no_bg_image);
+      
     } catch (error) {
-      console.log(error);
+      console.error("AI Improvement Error:", error); // Enhanced error logging
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
 );
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+}).on('error', (err: any) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use. Please try a different port or kill the process using this port.`);
+    console.error(`💡 Try running: netstat -ano | findstr :${PORT}`);
+    console.error(`💡 Or use a different port: PORT=5001 pnpm run dev`);
+  } else {
+    console.error('❌ Server error:', err);
+  }
+  process.exit(1);
+});

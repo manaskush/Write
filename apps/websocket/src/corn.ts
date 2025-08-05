@@ -1,10 +1,11 @@
 import cron from "node-cron"
 import WebSocket from "ws";
 
-const WS_URL = "wss://sketchwiz-web-scoket.onrender.com";
+// Changed to use local WebSocket server
+const WS_URL = "ws://localhost:8081";
 
 cron.schedule("*/5 * * * *", () => {
-  console.log("🟢 Pinging WebSocket...");
+  console.log("🟢 Pinging local WebSocket...");
   const ws = new WebSocket(WS_URL);
 
   ws.on("open", () => {
