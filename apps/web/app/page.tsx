@@ -68,7 +68,7 @@ const Navbar = () => {
         className="flex justify-between items-center max-w-7xl mx-auto px-6 h-16"
       >
         <Link href="/" className="font-bold text-xl text-white">
-          SketchWiz
+          VisionSpace
         </Link>
         <div className="hidden md:flex gap-2 items-center">
           {["About", "Features", "FAQ"].map((item) => (
@@ -136,7 +136,7 @@ const HeroSection = () => {
           to Clear Solution, Instantly.
         </h1>
         <p className="mt-6 max-w-2xl mx-auto text-lg text-[#b4b4b4]">
-          SketchWiz is an AI-powered collaborative canvas that understands your
+          VisionSpace is an AI-powered collaborative canvas that understands your
           ideas, solves problems, and enhances your creativity in real-time.
         </p>
         <div className="mt-8 flex justify-center items-center gap-4">
@@ -181,7 +181,7 @@ const AboutSection = () => {
             Our Mission: To merge creativity with intelligence.
           </h2>
           <p className="mt-6 text-lg text-[#b4b4b4]">
-            SketchWiz started with a simple idea: what if a whiteboard could do
+            VisionSpace started with a simple idea: what if a whiteboard could do
             more than just display ideas? What if it could understand them,
             solve them, and beautify them?
           </p>
@@ -204,7 +204,7 @@ const AboutSection = () => {
               height={100}
               width={100}
               src="/real.png"
-              alt="A collaborative session in SketchWiz"
+              alt="A collaborative session in VisionSpace"
               className="w-full h-auto rounded-lg"
             />
           </div>
@@ -282,7 +282,7 @@ const FeaturesSection = () => {
 const testimonials = [
   {
     quote:
-      "SketchWiz has revolutionized how our team brainstorms. The AI features are mind-blowing and save us hours of work.",
+      "VisionSpace has revolutionized how our team brainstorms. The AI features are mind-blowing and save us hours of work.",
     name: "Alex Johnson",
     title: "Product Lead, Innovate Inc.",
   },
@@ -324,9 +324,9 @@ const TestimonialsSection = () => (
 //--- FAQ SECTION ---//
 const faqs = [
   {
-    question: "What is SketchWiz?",
+    question: "What is VisionSpace?",
     answer:
-      "SketchWiz is a real-time collaborative digital canvas powered by Google's Gemini AI. It's designed to help users solve complex problems, enhance their art, and work together seamlessly.",
+      "VisionSpace is a real-time collaborative digital canvas powered by Google's Gemini AI. It's designed to help users solve complex problems, enhance their art, and work together seamlessly.",
   },
   {
     question: "How does the real-time collaboration work?",
@@ -452,7 +452,7 @@ const Footer = () => (
   <footer className="bg-[#1C1C1C] py-12 px-6 border-t border-[#333333]">
     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
       <div className="col-span-1 md:col-span-2">
-        <h3 className="text-xl font-bold text-white">SketchWiz</h3>
+        <h3 className="text-xl font-bold text-white">VisionSpace</h3>
         <p className="mt-2 text-sm text-[#b4b4b4]">
           The intelligent canvas for modern teams.
         </p>
@@ -534,7 +534,7 @@ const Footer = () => (
       </div>
     </div>
     <div className="mt-12 pt-8 border-t border-[#333333] text-center text-sm text-[#b4b4b4]">
-      <p>&copy; {new Date().getFullYear()} SketchWiz. All rights reserved.</p>
+      <p>&copy; {new Date().getFullYear()} VisionSpace. All rights reserved.</p>
     </div>
   </footer>
 );

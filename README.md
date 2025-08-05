@@ -1,7 +1,7 @@
 
-# 🎨 SketchWiz – AI-Powered Collaborative Canvas
+# 🎨 VisionSpace – AI-Powered Collaborative Canvas
 
-SketchWiz is a real-time, AI-enhanced collaborative canvas built using cutting-edge technologies. It allows users to **draw**, **write math/physics problems**, and get **instant AI assistance** — whether it's solving equations or enhancing their sketches. Think of it as an AI version of Excalidraw powered by Google Gemini AI, WebSockets, and a powerful room-based architecture.
+VisionSpace is a real-time, AI-enhanced collaborative canvas built using cutting-edge technologies. It allows users to **draw**, **write math/physics problems**, and get **instant AI assistance** — whether it's solving equations or enhancing their sketches. Think of it as an AI version of Excalidraw powered by Google Gemini AI, WebSockets, and a powerful room-based architecture.
 
 ---
 
@@ -102,8 +102,8 @@ SketchWiz is a real-time, AI-enhanced collaborative canvas built using cutting-e
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/your-username/sketchwiz.git
-cd sketchwiz
+git clone https://github.com/your-username/VisionSpace.git
+cd VisionSpace
 ```
 
 ### 2. Install Dependencies

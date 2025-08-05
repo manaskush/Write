@@ -4,7 +4,7 @@ import "./globals.css";
 import { NotificationProvider } from "../Component/notification/notification";
 
 export const metadata: Metadata = {
-  title: "SketchWiz",
+  title: "VisionSpace",
   description: "AI Powered Canvas",
 };
 

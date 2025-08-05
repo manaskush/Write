@@ -162,7 +162,7 @@ export default function DashboardPage() {
         <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-16">
           <Link href={"/"}>
             <h1 className="text-xl font-bold text-white">
-              SketchWiz Dashboard
+              VisionSpace Dashboard
             </h1>
           </Link>
           <UserMenu handleLogout={handleLogout} />

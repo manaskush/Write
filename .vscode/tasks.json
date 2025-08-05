@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Start SketchWiz Development",
+			"label": "Start VisionSpace Development",
 			"type": "shell",
 			"command": "pnpm",
 			"args": [
